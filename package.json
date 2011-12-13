@@ -1,9 +1,11 @@
 {
-    "name": "application-name"
+    "name": "ET-Refactor"
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
       "express": "2.5.1"
     , "jade": ">= 0.0.1"
+	, "coffeekup":">=0.3.1"
+	, "stylus":">=0.19.8"
   }
 }
