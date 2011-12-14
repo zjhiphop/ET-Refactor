@@ -1,0 +1,15 @@
+{
+    "name": "ET-Refactor",
+    "description": "use requireJS and some css/html template to make the project more efficent ",
+    "homepage": "http://zjhiphop.github.com/ET-Refactor/",
+    "version": "0.0.1",
+    "author": {
+        "name": "Jade Zhang",
+        "email": "zjhiphop@gmail.com",
+        "web": "http://zjhiphop.wordpress.com"
+    },
+    "dependencies": {
+        "requirejs":">=1.0",
+        "less":'>=1.0'        
+    }
+}

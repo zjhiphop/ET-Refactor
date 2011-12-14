@@ -1,4 +1,4 @@
-@echo on
+@echo off
 cls
 rmdir /s /q build-client  > nul
 cd /d %cmd%

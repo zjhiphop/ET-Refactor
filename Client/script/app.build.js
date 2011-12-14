@@ -304,6 +304,7 @@
     //called dirExclusionRegExp before the 1.0.2 release.
     //As of 1.0.3, this value can also be a string that is converted to a
     //RegExp via new RegExp().
-    fileExclusionRegExp: /^\.|\.[exe|bat]$/
+    fileExclusionRegExp: /^\.|\.(exe|bat|coffee|less|styl)$/,
+    dirExclusionRegExp: /^\.|less|styl|coffee/
 })
 

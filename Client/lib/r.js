@@ -1,5 +1,5 @@
 /**
- * @license r.js 1.0.0 Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
+ * @license r.js 1.0.2+ 20111209 5:30pm Pacific Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
@@ -20,7 +20,7 @@ var requirejs, require, define;
 
     var fileName, env, fs, vm, path, exec, rhinoContext, dir, nodeRequire,
         nodeDefine, exists, reqMain, loadedOptimizedLib,
-        version = '1.0.0',
+        version = '1.0.2+ 20111209 5:30pm Pacific',
         jsSuffixRegExp = /\.js$/,
         commandOption = '',
         //Used by jslib/rhino/args.js
@@ -101,7 +101,7 @@ var requirejs, require, define;
     }
 
     /** vim: et:ts=4:sw=4:sts=4
- * @license RequireJS 1.0.0 Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS 1.0.2 Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
@@ -113,8 +113,8 @@ var requirejs, require, define;
 
 (function () {
     //Change this version number for each release.
-    var version = "1.0.0",
-        commentRegExp = /(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg,
+    var version = "1.0.2",
+        commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg,
         cjsRequireRegExp = /require\(\s*["']([^'"\s]+)["']\s*\)/g,
         currDirRegExp = /^\.\//,
         jsSuffixRegExp = /\.js$/,
@@ -370,6 +370,10 @@ var requirejs, require, define;
                     if (pkgConfig && name === pkgName + '/' + pkgConfig.main) {
                         name = pkgName;
                     }
+                } else if (name.indexOf("./") === 0) {
+                    // No baseName, so this is ID is resolved relative
+                    // to baseUrl, pull off the leading dot.
+                    name = name.substring(2);
                 }
             }
             return name;
@@ -509,7 +513,8 @@ var requirejs, require, define;
                 map = manager.map,
                 fullName = map.fullName,
                 args = manager.deps,
-                listeners = manager.listeners;
+                listeners = manager.listeners,
+                cjsModule;
 
             //Call the callback to define the module, if necessary.
             if (cb && isFunction(cb)) {
@@ -527,7 +532,11 @@ var requirejs, require, define;
                     //If setting exports via "module" is in play,
                     //favor that over return value and exports. After that,
                     //favor a non-undefined return value over exports use.
-                    if (manager.cjsModule && manager.cjsModule.exports !== undefined) {
+                    cjsModule = manager.cjsModule;
+                    if (cjsModule &&
+                        cjsModule.exports !== undefined &&
+                        //Make sure it is not already the exports value
+                        cjsModule.exports !== defined[fullName]) {
                         ret = defined[fullName] = manager.cjsModule.exports;
                     } else if (ret === undefined && manager.usingExports) {
                         //exports already set the defined value.
@@ -1150,7 +1159,16 @@ var requirejs, require, define;
                             //Regular dependency.
                             if (!urlFetched[url] && !loaded[fullName]) {
                                 req.load(context, fullName, url);
-                                urlFetched[url] = true;
+
+                                //Mark the URL as fetched, but only if it is
+                                //not an empty: URL, used by the optimizer.
+                                //In that case we need to be sure to call
+                                //load() for each module that is mapped to
+                                //empty: so that dependencies are satisfied
+                                //correctly.
+                                if (url.indexOf('empty:') !== 0) {
+                                    urlFetched[url] = true;
+                                }
                             }
                         }
                     }
@@ -2379,7 +2397,7 @@ define('node/file', ['fs', 'path'], function (fs, path) {
 
     file = {
         backSlashRegExp: /\\/g,
-        dirExclusionRegExp: /^\./,
+        exclusionRegExp: /^\./,
         getLineSeparator: function () {
             return '/';
         },
@@ -2419,7 +2437,8 @@ define('node/file', ['fs', 'path'], function (fs, path) {
             //summary: Recurses startDir and finds matches to the files that match regExpFilters.include
             //and do not match regExpFilters.exclude. Or just one regexp can be passed in for regExpFilters,
             //and it will be treated as the "include" case.
-            //Ignores files/directories that start with a period (.).
+            //Ignores files/directories that start with a period (.) unless exclusionRegExp
+            //is set to another value.
             var files = [], topDir, regExpInclude, regExpExclude, dirFileArray,
                 i, stat, filePath, ok, dirFiles, fileName;
 
@@ -2450,11 +2469,12 @@ define('node/file', ['fs', 'path'], function (fs, path) {
                             ok = !filePath.match(regExpExclude);
                         }
 
-                        if (ok && !fileName.match(/^\./)) {
+                        if (ok && (!file.exclusionRegExp ||
+                            !file.exclusionRegExp.test(fileName))) {
                             files.push(filePath);
                         }
                     } else if (stat.isDirectory() &&
-                              (!file.dirExclusionRegExp || !fileName.match(file.dirExclusionRegExp))) {
+                              (!file.exclusionRegExp || !file.exclusionRegExp.test(fileName))) {
                         dirFiles = this.getFilteredFileList(filePath, regExpFilters, makeUnixPaths);
                         files.push.apply(files, dirFiles);
                     }
@@ -2602,7 +2622,7 @@ define('rhino/file', function () {
     var file = {
         backSlashRegExp: /\\/g,
 
-        dirExclusionRegExp: /^\./,
+        exclusionRegExp: /^\./,
 
         getLineSeparator: function () {
             return file.lineSeparator;
@@ -2646,7 +2666,8 @@ define('rhino/file', function () {
             //summary: Recurses startDir and finds matches to the files that match regExpFilters.include
             //and do not match regExpFilters.exclude. Or just one regexp can be passed in for regExpFilters,
             //and it will be treated as the "include" case.
-            //Ignores files/directories that start with a period (.).
+            //Ignores files/directories that start with a period (.) unless exclusionRegExp
+            //is set to another value.
             var files = [], topDir, regExpInclude, regExpExclude, dirFileArray,
                 i, fileObj, filePath, ok, dirFiles;
 
@@ -2680,11 +2701,12 @@ define('rhino/file', function () {
                             ok = !filePath.match(regExpExclude);
                         }
 
-                        if (ok && !fileObj.getName().match(/^\./)) {
+                        if (ok && (!file.exclusionRegExp ||
+                            !file.exclusionRegExp.test(fileObj.getName()))) {
                             files.push(filePath);
                         }
                     } else if (fileObj.isDirectory() &&
-                              (!file.dirExclusionRegExp || !fileObj.getName().match(file.dirExclusionRegExp))) {
+                              (!file.exclusionRegExp || !file.exclusionRegExp.test(fileObj.getName()))) {
                         dirFiles = this.getFilteredFileList(fileObj, regExpFilters, makeUnixPaths, true);
                         files.push.apply(files, dirFiles);
                     }
@@ -2984,7 +3006,6 @@ define('logger', ['env!env/print'], function (print) {
 //like Node's fs and path.
 
 define('uglifyjs/parse-js', ["require", "exports", "module"], function(require, exports, module) {
-
 /***********************************************************************
 
   A JavaScript tokenizer / parser / beautifier / compressor.
@@ -3278,12 +3299,12 @@ function tokenizer($TEXT) {
 
         function peek() { return S.text.charAt(S.pos); };
 
-        function next(signal_eof) {
+        function next(signal_eof, in_string) {
                 var ch = S.text.charAt(S.pos++);
                 if (signal_eof && !ch)
                         throw EX_EOF;
                 if (ch == "\n") {
-                        S.newline_before = true;
+                        S.newline_before = S.newline_before || !in_string;
                         ++S.line;
                         S.col = 0;
                 } else {
@@ -3380,8 +3401,8 @@ function tokenizer($TEXT) {
                 }
         };
 
-        function read_escaped_char() {
-                var ch = next(true);
+        function read_escaped_char(in_string) {
+                var ch = next(true, in_string);
                 switch (ch) {
                     case "n" : return "\n";
                     case "r" : return "\r";
@@ -3429,7 +3450,7 @@ function tokenizer($TEXT) {
                                                 return false;
                                         });
                                         if (octal_len > 0) ch = String.fromCharCode(parseInt(ch, 8));
-                                        else ch = read_escaped_char();
+                                        else ch = read_escaped_char(true);
                                 }
                                 else if (ch == quote) break;
                                 ret += ch;
@@ -4325,7 +4346,8 @@ exports.set_logger = function(logger) {
         warn = logger;
 };
 
-});define('uglifyjs/squeeze-more', ["require", "exports", "module", "./parse-js", "./process"], function(require, exports, module) {
+});
+define('uglifyjs/squeeze-more', ["require", "exports", "module", "./parse-js", "./process"], function(require, exports, module) {
 
 var jsp = require("./parse-js"),
     pro = require("./process"),
@@ -5356,7 +5378,8 @@ function ast_squeeze(ast, options) {
         options = defaults(options, {
                 make_seqs   : true,
                 dead_code   : true,
-                no_warnings : false
+                no_warnings : false,
+                keep_comps  : true
         });
 
         var w = ast_walker(), walk = w.walk, scope;
@@ -5374,11 +5397,13 @@ function ast_squeeze(ast, options) {
                         return best_of(not_c, [ "conditional", c[1], negate(c[2]), negate(c[3]) ]);
                     case "binary":
                         var op = c[1], left = c[2], right = c[3];
-                        switch (op) {
+                        if (!options.keep_comps) switch (op) {
                             case "<="  : return [ "binary", ">", left, right ];
                             case "<"   : return [ "binary", ">=", left, right ];
                             case ">="  : return [ "binary", "<", left, right ];
                             case ">"   : return [ "binary", "<=", left, right ];
+                        }
+                        switch (op) {
                             case "=="  : return [ "binary", "!=", left, right ];
                             case "!="  : return [ "binary", "==", left, right ];
                             case "===" : return [ "binary", "!==", left, right ];
@@ -5744,7 +5769,8 @@ var DOT_CALL_NO_PARENS = jsp.array_to_hash([
         "dot",
         "sub",
         "call",
-        "regexp"
+        "regexp",
+        "defun"
 ]);
 
 function make_string(str, ascii_only) {
@@ -6008,7 +6034,7 @@ function gen_code(ast, options) {
                 },
                 "call": function(func, args) {
                         var f = make(func);
-                        if (needs_parens(func))
+                        if (f.charAt(0) != "(" && needs_parens(func))
                                 f = "(" + f + ")";
                         return f + "(" + add_commas(MAP(args, function(expr){
                                 return parenthesize(expr, "seq");
@@ -6181,7 +6207,8 @@ function gen_code(ast, options) {
                         out += " " + make_name(name);
                 }
                 out += "(" + add_commas(MAP(args, make_name)) + ")";
-                return add_spaces([ out, make_block(body) ]);
+                out = add_spaces([ out, make_block(body) ]);
+                return needs_parens(this) ? "(" + out + ")" : out;
         };
 
         function must_has_semicolon(node) {
@@ -6378,7 +6405,8 @@ exports.MAP = MAP;
 // keep this last!
 exports.ast_squeeze_more = require("./squeeze-more").ast_squeeze_more;
 
-});define('uglifyjs/index', ["require", "exports", "module", "./parse-js", "./process"], function(require, exports, module) {
+});
+define('uglifyjs/index', ["require", "exports", "module", "./parse-js", "./process"], function(require, exports, module) {
 
 //convienence function(src, [options]);
 function uglify(orig_code, options){
@@ -6605,7 +6633,11 @@ define('parse', ['uglifyjs/index'], function (uglify) {
                     deps: deps
                 });
             }
-        });
+
+            //If define was found, no need to dive deeper, unless
+            //the config explicitly wants to dig deeper.
+            return !options.findNestedDependencies;
+        }, options);
 
         if (options.insertNeedsDefine && needsDefine) {
             result += 'require.needsDefine("' + moduleName + '");';
@@ -6640,15 +6672,44 @@ define('parse', ['uglifyjs/index'], function (uglify) {
      * Handles parsing a file recursively for require calls.
      * @param {Array} parentNode the AST node to start with.
      * @param {Function} onMatch function to call on a parse match.
+     * @param {Object} [options] This is normally the build config options if
+     * it is passed.
      */
-    parse.recurse = function (parentNode, onMatch) {
-        var i, node;
+    parse.recurse = function (parentNode, onMatch, options) {
+        var hasHas = options && options.has,
+            i, node;
+
         if (isArray(parentNode)) {
             for (i = 0; i < parentNode.length; i++) {
                 node = parentNode[i];
                 if (isArray(node)) {
-                    this.parseNode(node, onMatch);
-                    this.recurse(node, onMatch);
+                    //If has config is in play, if calls have been converted
+                    //by this point to be true/false values. So, if
+                    //options has a 'has' value, skip if branches that have
+                    //literal false values.
+
+                    //uglify returns if constructs in an array:
+                    //[0]: 'if'
+                    //[1]: the condition, ['name', true | false] for the has replaced case.
+                    //[2]: the block to process if true
+                    //[3]: the block to process if false
+                    //For if/else if/else, the else if is in the [3],
+                    //so only ever have to deal with this structure.
+                    if (hasHas && node[0] === 'if' && node[1] && node[1][0] === 'name' &&
+                        (node[1][1] === 'true' || node[1][1] === 'false')) {
+                        if (node[1][1] === 'true') {
+                            this.recurse([node[2]], onMatch, options);
+                        } else {
+                            this.recurse([node[3]], onMatch, options);
+                        }
+                    } else {
+                        if (this.parseNode(node, onMatch)) {
+                            //The onMatch indicated parsing should
+                            //stop for children of this node.
+                            continue;
+                        }
+                        this.recurse(node, onMatch, options);
+                    }
                 }
             }
         }
@@ -6785,7 +6846,7 @@ define('parse', ['uglifyjs/index'], function (uglify) {
                 call = node[1];
                 args = node[2];
 
-                if (call[0] === 'name' && call[1] === 'require') {
+                if (call && call[0] === 'name' && call[1] === 'require') {
                     moduleName = args[0];
                     if (moduleName[0] === 'string') {
                         deps.push(moduleName[1]);
@@ -6863,7 +6924,7 @@ define('parse', ['uglifyjs/index'], function (uglify) {
         var call, name, config, deps, args, cjsDeps;
 
         if (!isArray(node)) {
-            return null;
+            return false;
         }
 
         if (node[0] === 'call') {
@@ -6871,7 +6932,8 @@ define('parse', ['uglifyjs/index'], function (uglify) {
             args = node[2];
 
             if (call) {
-                if (call[0] === 'name' && call[1] === 'require') {
+                if (call[0] === 'name' &&
+                   (call[1] === 'require' || call[1] === 'requirejs')) {
 
                     //It is a plain require() call.
                     config = args[0];
@@ -6887,11 +6949,9 @@ define('parse', ['uglifyjs/index'], function (uglify) {
 
                     return onMatch("require", null, null, deps);
 
-                } else if ((call[0] === 'name' && call[1] === 'define') ||
-                           (call[0] === 'dot' && call[1][1] === 'require' &&
-                            call[2] === 'def')) {
+                } else if (call[0] === 'name' && call[1] === 'define') {
 
-                    //A define or require.def call
+                    //A define call
                     name = args[0];
                     deps = args[1];
                     //Only allow define calls that match what is expected
@@ -6907,7 +6967,9 @@ define('parse', ['uglifyjs/index'], function (uglify) {
                     if (((name[0] === 'string' || isArrayLiteral(name) ||
                           name[0] === 'function' || isObjectLiteral(name))) &&
                         (!deps || isArrayLiteral(deps) ||
-                         deps[0] === 'function' || isObjectLiteral(deps))) {
+                         deps[0] === 'function' || isObjectLiteral(deps) ||
+                         // allow define(['dep'], factory) pattern
+                         (isArrayLiteral(name) && deps[0] === 'name' && args.length === 2))) {
 
                         //If first arg is a function, could be a commonjs wrapper,
                         //look inside for commonjs dependencies.
@@ -6930,7 +6992,7 @@ define('parse', ['uglifyjs/index'], function (uglify) {
             }
         }
 
-        return null;
+        return false;
     };
 
     /**
@@ -6984,6 +7046,9 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
         nsWrapRegExp: /\/\*requirejs namespace: true \*\//,
         apiDefRegExp: /var requirejs, require, define;/,
         defineCheckRegExp: /typeof\s+define\s*===\s*["']function["']\s*&&\s*define\s*\.\s*amd/g,
+        defineJQueryRegExp: /typeof\s+define\s*===\s*["']function["']\s*&&\s*define\s*\.\s*amd\s*&&\s*define\s*\.\s*amd\s*\.\s*jQuery/g,
+        defineTernaryRegExp: /typeof\s+define\s*===\s*['"]function["']\s*&&\s*define\s*\.\s*amd\s*\?\s*define/,
+        amdefineRegExp: /if\s*\(\s*typeof define\s*\!==\s*'function'\s*\)\s*\{\s*[^\{\}]+amdefine[^\{\}]+\}/g,
 
         removeStrict: function (contents, config) {
             return config.useStrict ? contents : contents.replace(pragma.useStrictRegExp, '');
@@ -6994,7 +7059,18 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
                 //Namespace require/define calls
                 fileContents = fileContents.replace(pragma.nsRegExp, '$1' + ns + '.$2(');
 
+
+                //Namespace define ternary use:
+                fileContents = fileContents.replace(pragma.defineTernaryRegExp,
+                                                    "typeof " + ns + ".define === 'function' && " + ns + ".define.amd ? " + ns + ".define");
+
+                //Namespace define jquery use:
+                fileContents = fileContents.replace(pragma.defineJQueryRegExp,
+                                                    "typeof " + ns + ".define === 'function' && " + ns + ".define.amd && " + ns + ".define.jQuery");
+
                 //Namespace define checks.
+                //Do this one last, since it is a subset of the more specific
+                //checks above.
                 fileContents = fileContents.replace(pragma.defineCheckRegExp,
                                                     "typeof " + ns + ".define === 'function' && " + ns + ".define.amd");
 
@@ -7162,6 +7238,9 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
                                  fileName + ', skipping.');
                 }
             }
+
+            //Strip amdefine use for node-shared modules.
+            fileContents = fileContents.replace(pragma.amdefineRegExp, '');
 
             //Do namespacing
             if (onLifecycleName === 'OnSave' && config.namespace) {
@@ -7421,6 +7500,8 @@ function (lang,   logger,   envOptimize,        file,           parse,
     }
 
     optimize = {
+        licenseCommentRegExp: /\/\*[\s\S]*?\*\//g,
+
         /**
          * Optimizes a file that contains JavaScript content. Optionally collects
          * plugin resources mentioned in a file, and then passes the content
@@ -7439,7 +7520,8 @@ function (lang,   logger,   envOptimize,        file,           parse,
             var parts = (config.optimize + "").split('.'),
                 optimizerName = parts[0],
                 keepLines = parts[1] === 'keepLines',
-                fileContents, optFunc, deps, i, dep;
+                licenseContents = '',
+                fileContents, optFunc, match, comment;
 
             fileContents = file.readFile(fileName);
 
@@ -7454,7 +7536,19 @@ function (lang,   logger,   envOptimize,        file,           parse,
                                     optimizerName +
                                     '" not found for this environment');
                 }
-                fileContents = optFunc(fileName, fileContents, keepLines,
+
+                //Pull out any license comments for prepending after optimization.
+                optimize.licenseCommentRegExp.lastIndex = 0;
+                while ((match = optimize.licenseCommentRegExp.exec(fileContents))) {
+                    comment = match[0];
+                    //Only keep the comments if they are license comments.
+                    if (comment.indexOf('@license') !== -1 ||
+                        comment.indexOf('/*!') === 0) {
+                        licenseContents += comment + '\n';
+                    }
+                }
+
+                fileContents = licenseContents + optFunc(fileName, fileContents, keepLines,
                                         config[optimizerName]);
             }
 
@@ -7580,8 +7674,7 @@ function (file,           pragma,   parse) {
 
         var layer,
             pluginBuilderRegExp = /(["']?)pluginBuilder(["']?)\s*[=\:]\s*["']([^'"\s]+)["']/,
-            oldDef,
-            cachedFileContents = {};
+            oldDef;
 
 
         /** Print out some extrs info about the module tree that caused the error. **/
@@ -7606,6 +7699,8 @@ function (file,           pragma,   parse) {
             throw err;
         };
 
+        //Stored cached file contents for reuse in other layers.
+        require._cachedFileContents = {};
 
         /** Reset state for each build layer pass. */
         require._buildReset = function () {
@@ -7666,6 +7761,8 @@ function (file,           pragma,   parse) {
             return oldDef.apply(require, arguments);
         };
 
+        define.amd = oldDef.amd;
+
         //Add some utilities for plugins
         require._readFile = file.readFile;
         require._fileExists = function (path) {
@@ -7704,9 +7801,9 @@ function (file,           pragma,   parse) {
                 }
 
                 try {
-                    if (url in cachedFileContents &&
+                    if (url in require._cachedFileContents &&
                         (!context.needFullExec[moduleName] || context.fullExec[moduleName])) {
-                        contents = cachedFileContents[url];
+                        contents = require._cachedFileContents[url];
                     } else {
                         //Load the file contents, process for conditionals, then
                         //evaluate it.
@@ -7738,11 +7835,13 @@ function (file,           pragma,   parse) {
                         //dependencies that may be separate to how the pluginBuilder works.
                         if (!context.needFullExec[moduleName]) {
                             contents = parse(moduleName, url, contents, {
-                                insertNeedsDefine: true
+                                insertNeedsDefine: true,
+                                has: context.config.has,
+                                findNestedDependencies: context.config.findNestedDependencies
                             });
                         }
 
-                        cachedFileContents[url] = contents;
+                        require._cachedFileContents[url] = contents;
                     }
 
                     if (contents) {
@@ -8011,6 +8110,7 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
             inlineText: true,
             isBuild: true,
             optimizeAllPluginResources: false,
+            findNestedDependencies: false,
             //By default, all files/directories are copied, unless
             //they match this regexp, by default just excludes .folders
             dirExclusionRegExp: file.dirExclusionRegExp
@@ -8637,9 +8737,18 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                             ' pages.');
         }
 
-        //Set file.dirExclusionRegExp if desired
-        if ('dirExclusionRegExp' in config) {
-            file.dirExclusionRegExp = config.dirExclusionRegExp;
+        //Set file.fileExclusionRegExp if desired
+        if ('fileExclusionRegExp' in config) {
+            if (typeof config.fileExclusionRegExp === "string") {
+              file.exclusionRegExp = new RegExp(config.fileExclusionRegExp);
+            } else {
+              file.exclusionRegExp = config.fileExclusionRegExp;
+            }
+        } else if ('dirExclusionRegExp' in config) {
+            //Set file.dirExclusionRegExp if desired, this is the old
+            //name for fileExclusionRegExp before 1.0.2. Support for backwards
+            //compatibility
+            file.exclusionRegExp = config.dirExclusionRegExp;
         }
 
         return config;
@@ -8949,7 +9058,9 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                 //Reset build internals on each run.
                 requirejs._buildReset();
 
-                callback(result);
+                if (callback) {
+                    callback(result);
+                }
             };
 
             //Enable execution of this callback in a build setting.
