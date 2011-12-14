@@ -4,10 +4,10 @@ rmdir /s /q build-client  > nul
 cd /d %cmd%
 
 set /p c=please input comments:
-if '%c%'=='' (
+if "%c%"=="" (
   set /p c=you must input commit msg first:
 )
-if '%c%'=='' (
+if "%c%"=="" (
   echo commit failed!
   goto :eof
 )
