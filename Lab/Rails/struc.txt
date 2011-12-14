@@ -1,0 +1,89 @@
+©À©¤app
+©¦  ©À©¤assets
+©¦  ©¦  ©À©¤images
+©¦  ©¦  ©¦      rails.png
+©¦  ©¦  ©À©¤javascripts
+©¦  ©¦  ©¦      application.js
+©¦  ©¦  ©¸©¤stylesheets
+©¦  ©¦          application.css
+©¦  ©À©¤controllers
+©¦  ©¦      application_controller.rb
+©¦  ©À©¤helpers
+©¦  ©¦      application_helper.rb      
+©¦  ©À©¤mailers
+©¦  ©¦      .gitkeep     
+©¦  ©À©¤models
+©¦  ©¦      .gitkeep
+©¦  ©¸©¤views
+©¦      ©¸©¤layouts
+©¦              application.html.erb              
+©À©¤config
+©¦  ©¦  application.rb
+©¦  ©¦  boot.rb
+©¦  ©¦  database.yml
+©¦  ©¦  environment.rb
+©¦  ©¦  routes.rb
+©¦  ©À©¤environments
+©¦  ©¦      development.rb
+©¦  ©¦      production.rb
+©¦  ©¦      test.rb
+©¦  ©À©¤initializers
+©¦  ©¦      backtrace_silencers.rb
+©¦  ©¦      inflections.rb
+©¦  ©¦      mime_types.rb
+©¦  ©¦      secret_token.rb
+©¦  ©¦      session_store.rb
+©¦  ©¦      wrap_parameters.rb
+©¦  ©¸©¤locales
+©¦          en.yml          
+©À©¤db
+©¦      development.sqlite3
+©¦      seeds.rb      
+©À©¤doc
+©¦      README_FOR_APP      
+©À©¤lib
+©¦  ©À©¤assets
+©¦  ©¦      .gitkeep        
+©¦  ©¸©¤tasks
+©¦          .gitkeep          
+©À©¤log
+©¦      .gitkeep
+©¦      development.log
+©À©¤public
+©¦      404.html
+©¦      422.html
+©¦      500.html
+©¦      favicon.ico
+©¦      index.html
+©¦      robots.txt
+©À©¤script
+©¦      rails
+©À©¤test
+©¦  ©¦  test_helper.rb
+©¦  ©À©¤fixtures
+©¦  ©¦      .gitkeep
+©¦  ©À©¤functional
+©¦  ©¦      .gitkeep
+©¦  ©À©¤integration
+©¦  ©¦      .gitkeep
+©¦  ©À©¤performance
+©¦  ©¦      browsing_test.rb
+©¦  ©¸©¤unit
+©¦          .gitkeep
+©À©¤tmp
+©¦  ©À©¤cache
+©¦  ©¦  ©¸©¤assets
+©¦  ©¦      ©¸©¤CF0
+©¦  ©¦          ©¸©¤DA0
+©¦  ©¦                  sprockets%2Fd7d5b37686831d37c4dd75e645f5e016         
+©¦  ©À©¤pids
+©¦  ©À©¤sessions
+©¦  ©¸©¤sockets
+©¸©¤vendor
+    ©À©¤assets
+    ©¦  ©¸©¤stylesheets
+    ©¦          .gitkeep
+    ©¦          
+    ©¸©¤plugins
+            .gitkeep
+            
