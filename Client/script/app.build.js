@@ -167,7 +167,7 @@
     //system. The example below will rename define() calls to foo.define().
     //See http://requirejs.org/docs/faq-advanced.html#rename for a more
     //complete example.
-    namespace: 'ET',
+    namespace: '',
 
     //Skip processing for pragmas.
     skipPragmas: false,
@@ -274,10 +274,10 @@
     //not globals. The end text can expose some globals from your file,
     //making it easy to create stand-alone libraries that do not mandate
     //the end user use requirejs.
-    wrap: {
-        start: "(function() {",
-        end: "}());"
-    },
+    //wrap: {
+        //start: "(function() {",
+        //end: "}());"
+    //},
 
     //Another way to use wrap, but uses default wrapping of:
     //(function() { + content + }());
@@ -304,7 +304,6 @@
     //called dirExclusionRegExp before the 1.0.2 release.
     //As of 1.0.3, this value can also be a string that is converted to a
     //RegExp via new RegExp().
-    fileExclusionRegExp: /^\.|\.(exe|bat|coffee|less|styl)$/,
-    dirExclusionRegExp: /^\.|less|styl|coffee/
+    fileExclusionRegExp: /^\.|app\.build\.js|\.(exe|bat|coffee|less|styl|json|markdown)$/
 })
 

@@ -834,7 +834,7 @@
         },
 		init:function(o){
 		  var opt=$.extend({},this.defaults,o);
-		  $(opt.epaper_wrapper).setTemplateURL('./template/epaper.tpl');
+		  $(opt.epaper_wrapper).setTemplateURL('./tpl/jtemplate/epaper.tpl');
 		  $(opt.epaper_wrapper).processTemplate(opt.src);
 		  $(opt.selectors.epaper_container).epaper();
 		}
