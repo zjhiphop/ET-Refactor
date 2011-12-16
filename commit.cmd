@@ -1,6 +1,5 @@
 @echo off
 cls
-rmdir /s /q build-client  > nul
 cd /d %cmd%
 
 set /p c=please input comments:
