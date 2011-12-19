@@ -9,7 +9,9 @@ set /p t=make your chose:
 if %t%==1 (
 	git fetch
 	git diff > .diff 
+	color A
 	echo difference from your brunch to server:
+	color F
  	echo...........................................
 	type .diff
 	echo...........................................
@@ -18,7 +20,9 @@ if %t%==1 (
 if %t%==2 (
 	call  :commit
 	git diff > .diff 
+	color A
 	echo difference from your brunch to server:
+	color F
 	echo...........................................
 	type .diff
 	echo...........................................
