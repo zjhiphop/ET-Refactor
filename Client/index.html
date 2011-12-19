@@ -1,12 +1,24 @@
 <!DOCTYPE HTML>
 <html lang="en-US">
-<head>
-	<meta charset="UTF-8">
-	<title>ET Activity Demo Page</title>
-	<link href="css/stylus/epaper.css" rel="stylesheet" type="text/css" />
-	<script data-main="script/main" src="script/helper/require-jquery.js"></script>
-</head>
-<body>
-	<div id='container'></div>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>ET Activity Demo Page</title>
+        <link href="css/less/epaper.css" rel="stylesheet" type="text/css" />
+        <script data-main="script/main" src="script/helper/require-jquery.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            /*http://requirejs.org/docs/api.html#config*/
+            require.config({
+                baseUrl : ".",
+                paths : {
+                    "js" : "script",
+                    "css":"css"
+                },
+                waitSeconds : 15,
+                locale : "fr-fr"
+            });
+        </script>
+    </head>
+    <body>
+        <div id='container'></div>
+    </body>
 </html>
