@@ -11,7 +11,6 @@ if %t%==1 (
 	git diff > .diff 
 	color A
 	echo difference from your brunch to server:
-	color F
  	echo...........................................
 	type .diff
 	echo...........................................
@@ -22,7 +21,6 @@ if %t%==2 (
 	git diff > .diff 
 	color A
 	echo difference from your brunch to server:
-	color F
 	echo...........................................
 	type .diff
 	echo...........................................

@@ -1,29 +1,100 @@
 diff --git a/.diff b/.diff
-index 7461f14..e69de29 100644
+index c4bfe2f..e69de29 100644
 --- a/.diff
 +++ b/.diff
-@@ -1,123 +0,0 @@
+@@ -1,146 +0,0 @@
 -diff --git a/.diff b/.diff
--index 9561b75..e69de29 100644
+-index 7461f14..e69de29 100644
 ---- a/.diff
 -+++ b/.diff
--@@ -1,100 +0,0 @@
+-@@ -1,123 +0,0 @@
 --diff --git a/.diff b/.diff
---index 5db47b0..e69de29 100644
+--index 9561b75..e69de29 100644
 ----- a/.diff
 --+++ b/.diff
---@@ -1,77 +0,0 @@
----diff --git a/.gitignore b/.gitignore
----index 968e1ed..e1d2709 100644
------- a/.gitignore
----+++ b/.gitignore
----@@ -1,4 +1,4 @@
---- .project
---- build-client
---- bin
-----obj
----+obj
----\ No newline at end of file
+--@@ -1,100 +0,0 @@
+---diff --git a/.diff b/.diff
+---index 5db47b0..e69de29 100644
+------ a/.diff
+---+++ b/.diff
+---@@ -1,77 +0,0 @@
+----diff --git a/.gitignore b/.gitignore
+----index 968e1ed..e1d2709 100644
+------- a/.gitignore
+----+++ b/.gitignore
+----@@ -1,4 +1,4 @@
+---- .project
+---- build-client
+---- bin
+-----obj
+----+obj
+----\ No newline at end of file
+----diff --git a/Client/css/epaper-less.css b/Client/css/epaper-less.css
+----deleted file mode 100644
+----index 7a42879..0000000
+------- a/Client/css/epaper-less.css
+----+++ /dev/null
+----@@ -1,9 +0,0 @@
+-----#header {
+-----  color: #333333;
+-----  border-left: 1px;
+-----  border-right: 2px;
+-----}
+-----#footer {
+-----  color: #114411;
+-----  border-color: #7d2717;
+-----}
+----diff --git a/Client/css/readme.txt b/Client/css/readme.txt
+----deleted file mode 100644
+----index e69de29..0000000
+----diff --git a/commit.cmd b/commit.cmd
+----index c207b7f..79ce0a6 100644
+------- a/commit.cmd
+----+++ b/commit.cmd
+----@@ -1,7 +1,35 @@
+---- @echo off
+---- cls
+-----cd /d %cmd%
+----+@echo --------------------------
+----+@echo 1.get project
+----+@echo 2.push project
+----+@echo --------------------------
+----+:continue
+----+set /p t=make your chose:
+----+if %t%==1 (
+----+	git fetch
+----+	git diff > .diff 
+----+	echo difference from your brunch to server:
+----+	...........................................
+----+	type .diff
+----+	...........................................
+----+	pause & goto :eof
+----+)
+----+if %t%==2 (
+----+	call  :commit
+----+	git diff > .diff 
+----+	echo difference from your brunch to server:
+----+	...........................................
+----+	type .diff
+----+	...........................................
+----+	pause & goto :eof
+----+) else (
+----+ @echo your chose is invalid!
+----+ goto :continue
+----+)
+---- 
+----+:commit
+----+cd /d %cmd%
+---- set /p c=please input comments:
+---- if "%c%"=="" (
+----   set /p c=you must input commit msg first:
+----@@ -10,6 +38,5 @@ if "%c%"=="" (
+----   echo commit failed!
+----   goto :eof
+---- )
+-----
+---- git add . &  git commit -m "%c%" & git push
+---- pause
 ---diff --git a/Client/css/epaper-less.css b/Client/css/epaper-less.css
 ---deleted file mode 100644
 ---index 7a42879..0000000
@@ -42,54 +113,6 @@ index 7461f14..e69de29 100644
 ---diff --git a/Client/css/readme.txt b/Client/css/readme.txt
 ---deleted file mode 100644
 ---index e69de29..0000000
----diff --git a/commit.cmd b/commit.cmd
----index c207b7f..79ce0a6 100644
------- a/commit.cmd
----+++ b/commit.cmd
----@@ -1,7 +1,35 @@
---- @echo off
---- cls
-----cd /d %cmd%
----+@echo --------------------------
----+@echo 1.get project
----+@echo 2.push project
----+@echo --------------------------
----+:continue
----+set /p t=make your chose:
----+if %t%==1 (
----+	git fetch
----+	git diff > .diff 
----+	echo difference from your brunch to server:
----+	...........................................
----+	type .diff
----+	...........................................
----+	pause & goto :eof
----+)
----+if %t%==2 (
----+	call  :commit
----+	git diff > .diff 
----+	echo difference from your brunch to server:
----+	...........................................
----+	type .diff
----+	...........................................
----+	pause & goto :eof
----+) else (
----+ @echo your chose is invalid!
----+ goto :continue
----+)
---- 
----+:commit
----+cd /d %cmd%
---- set /p c=please input comments:
---- if "%c%"=="" (
----   set /p c=you must input commit msg first:
----@@ -10,6 +38,5 @@ if "%c%"=="" (
----   echo commit failed!
----   goto :eof
---- )
-----
---- git add . &  git commit -m "%c%" & git push
---- pause
 --diff --git a/Client/css/epaper-less.css b/Client/css/epaper-less.css
 --deleted file mode 100644
 --index 7a42879..0000000
