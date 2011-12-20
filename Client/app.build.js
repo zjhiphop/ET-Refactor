@@ -1,5 +1,6 @@
 /*
- * This is an example build file that demonstrates how to use the build system for
+ * This is an example build file that demonstrates how to use the build system
+ * for
  * require.js.
  *
  * THIS BUILD FILE WILL NOT WORK. It is referencing paths that probably
@@ -8,7 +9,7 @@
  *
  */
 
-({
+( {
     //The top level directory that contains your app. If this option is used
     //then it assumed your scripts are in a subdirectory under this path.
     //This option is not required. If it is not specified, then baseUrl
@@ -16,13 +17,13 @@
     //then all the files from the app directory will be copied to the dir:
     //output area, and baseUrl will assume to be a relative path under
     //this directory.
-    appDir: "../",
+    appDir : ".",
 
     //By default, all modules are located relative to this path. If baseUrl
     //is not explicitly set, then all modules are loaded relative to
     //the directory that holds the build file. If appDir is set, then
     //baseUrl should be specified as relative to the appDir.
-    baseUrl: "script/",
+    baseUrl : ".",
 
     //Set paths for modules. If relative paths, set relative to baseUrl above.
     //If a special value of "empty:" is used for the path value, then that
@@ -31,28 +32,32 @@
     //Useful to map module names that are to resources on a CDN or other
     //http: URL when running in the browser and during an optimization that
     //file should be skipped because it has no dependencies.
-    paths: {
-    	/*widget*/
+    paths : {
+        /*widget*/
         /*activity*/
         /*helper*/
-       "jquery": "helper/require-jquery"
+        "jquery" : "script/helper/require-jquery",
+        "js" : "script",
+        "css" : "css",
+        "tpl" : "tpl"
     },
 
-    //Configure CommonJS packages. See http://requirejs.org/docs/api.html#packages
+    //Configure CommonJS packages. See
+    // http://requirejs.org/docs/api.html#packages
     //for more information.
-    packagePaths: [],
-    packages: [],
+    packagePaths : [],
+    packages : [],
 
     //The directory path to save the output. If not specified, then
     //the path will default to be a directory called "build" as a sibling
     //to the build file. All relative paths are relative to the build file.
-    dir: "../../build-client",
+    dir : "../../build-client",
 
     //Used to inline i18n resources into the built file. If no locale
     //is specified, i18n resources will not be inlined. Only one locale
     //can be inlined for a build. Root bundles referenced by a build layer
     //will be included in a build layer regardless of locale being set.
-    locale: "en-us",
+    locale : "en-us",
 
     //How to optimize all the JS files in the build output directory.
     //Right now only the following values
@@ -64,27 +69,26 @@
     //- "closure.keepLines": Same as closure option, but keeps line returns
     //in the minified files.
     //- "none": no minification will be done.
-    optimize: "uglify",
+    optimize : "uglify",
 
     //If using UglifyJS for script optimization, these config options can be
     //used to pass configuration values to UglifyJS.
     //See https://github.com/mishoo/UglifyJS for the possible values.
     /*
     uglify: {
-            gen_codeOptions: {},
-            strict_semicolons: {},
-            do_toplevel: {},
-            ast_squeezeOptions: {}
-        },*/
-    
+    gen_codeOptions: {},
+    strict_semicolons: {},
+    do_toplevel: {},
+    ast_squeezeOptions: {}
+    },*/
 
     //If using Closure Compiler for script optimization, these config options
     //can be used to configure Closure Compiler. See the documentation for
     //Closure compiler for more information.
-    closure: {
-        CompilerOptions: {},
-        CompilationLevel: 'SIMPLE_OPTIMIZATIONS',
-        loggingLevel: 'WARNING'
+    closure : {
+        CompilerOptions : {},
+        CompilationLevel : 'SIMPLE_OPTIMIZATIONS',
+        loggingLevel : 'WARNING'
     },
 
     //Allow CSS optimizations. Allowed values:
@@ -93,23 +97,23 @@
     //of CSS.
     //- "standard.keepLines": like "standard" but keeps line returns.
     //- "none": skip CSS optimizations.
-    optimizeCss: "standard.keepLines",
+    optimizeCss : "standard.keepLines",
 
     //If optimizeCss is in use, a list of of files to ignore for the @import
     //inlining. The value of this option should be a comma separated list
     //of CSS file names to ignore. The file names should match whatever
     //strings are used in the @import calls.
-    cssImportIgnore: null,
+    cssImportIgnore : null,
 
     //Inlines the text for any text! dependencies, to avoid the separate
     //async XMLHttpRequest calls to load those dependencies.
-    inlineText: true,
+    inlineText : true,
 
     //Allow "use strict"; be included in the RequireJS files.
     //Default is false because there are not many browsers that can properly
     //process and give errors on code for ES5 strict mode,
     //and there is a lot of legacy code that will not work in strict mode.
-    useStrict: false,
+    useStrict : false,
 
     //Specify build pragmas. If the source files contain comments like so:
     //>>excludeStart("fooExclude", pragmas.fooExclude);
@@ -125,8 +129,8 @@
     //Pragmas also remove code in non-minified source, where has branch
     //trimming is only done if the code is minified via UglifyJS or
     //Closure Compiler.
-    pragmas: {
-        fooExclude: true
+    pragmas : {
+        fooExclude : true
     },
 
     //Same as "pragmas", but only applied once during the file save phase
@@ -138,9 +142,9 @@
     //phase, but once files are saved as plain JavaScript, the CoffeeScript
     //compiler is no longer needed. In that case, pragmasOnSave would be used
     //to exclude the compiler code during the save phase.
-    pragmasOnSave: {
+    pragmasOnSave : {
         //Just an example
-        excludeCoffeeScript: false
+        excludeCoffeeScript : false
     },
 
     //Allows trimming of code branches that use has.js-based feature detection:
@@ -148,17 +152,17 @@
     //The code branch trimming only happens if minification with UglifyJS or
     //Closure Compiler is done. For more information, see:
     //http://requirejs.org/docs/optimization.html#hasjs
-    has: {
-        'function-bind': true,
-        'string-trim': false
+    has : {
+        'function-bind' : true,
+        'string-trim' : false
     },
 
     //Similar to pragmasOnSave, but for has tests -- only applied during the
     //file save phase of optimization, where "has" is applied to both
     //dependency mapping and file save phases.
-    hasOnSave: {
-        'function-bind': true,
-        'string-trim': false
+    hasOnSave : {
+        'function-bind' : true,
+        'string-trim' : false
     },
 
     //Allows namespacing requirejs, require and define calls to a new name.
@@ -167,19 +171,20 @@
     //system. The example below will rename define() calls to foo.define().
     //See http://requirejs.org/docs/faq-advanced.html#rename for a more
     //complete example.
-    namespace: '',
+    namespace : '',
 
     //Skip processing for pragmas.
-    skipPragmas: false,
+    skipPragmas : false,
 
     //If skipModuleInsertion is false, then files that do not use define()
     //to define modules will get a define() placeholder inserted for them.
     //Also, require.pause/resume calls will be inserted.
     //Set it to true to avoid this. This is useful if you are building code that
     //does not use require() in the built project or in the JS files, but you
-    //still want to use the optimization tool from RequireJS to concatenate modules
+    //still want to use the optimization tool from RequireJS to concatenate
+    // modules
     //together.
-    skipModuleInsertion: false,
+    skipModuleInsertion : false,
 
     //If it is not a one file optimization, scan through all .js files in the
     //output directory for any plugin resource dependencies, and if the plugin
@@ -187,87 +192,87 @@
     //slower optimization. Only use if there are some plugins that use things
     //like XMLHttpRequest that do not work across domains, but the built code
     //will be placed on another domain.
-    optimizeAllPluginResources: false,
+    optimizeAllPluginResources : false,
 
     //Finds require() dependencies inside a require() or define call. By default
-    //this value is false, because those resources should be considered dynamic/runtime
+    //this value is false, because those resources should be considered
+    // dynamic/runtime
     //calls. However, for some optimization scenarios,
     //Introduced in 1.0.3. Previous versions incorrectly found the nested calls
     //by default.
-    findNestedDependencies: false,
+    findNestedDependencies : false,
 
     //List the modules that will be optimized. All their immediate and deep
     //dependencies will be included in the module's file when the build is
     //done. If that module or any of its dependencies includes i18n bundles,
-    //only the root bundles will be included unless the locale: section is set above.
-    modules: [
-        /*
-        //Just specifying a module name means that module will be converted into
-                //a built file that contains all of its dependencies. If that module or any
-                //of its dependencies includes i18n bundles, they may not be included in the
-                //built file unless the locale: section is set above.
-                {
-                    name: "foo/bar/bop",
-        
-                    //For build profiles that contain more than one modules entry,
-                    //allow overrides for the properties that set for the whole build,
-                    //for example a different set of pragmas for this module.
-                    //The override's value is an object that can
-                    //contain any of the other build options in this file.
-                    override: {
-                        pragmas: {
-                            fooExclude: true
-                        }
-                    }
-                },
-        
-                //This module entry combines all the dependencies of foo/bar/bop and foo/bar/bee
-                //and any of their dependencies into one file.
-                {
-                    name: "foo/bar/bop",
-                    include: ["foo/bar/bee"]
-                },
-        
-                //This module entry combines all the dependencies of foo/bar/bip into one file,
-                //but excludes foo/bar/bop and its dependencies from the built file. If you want
-                //to exclude a module that is also another module being optimized, it is more
-                //efficient if you define that module optimization entry before using it
-                //in an exclude array.
-                {
-                    name: "foo/bar/bip",
-                    exclude: [
-                        "foo/bar/bop"
-                    ]
-                },
-        
-                //This module entry shows how to specify a specific module be excluded
-                //from the built module file. excludeShallow means just exclude that
-                //specific module, but if that module has nested dependencies that are
-                //part of the built file, keep them in there. This is useful during
-                //development when you want to have a fast bundled set of modules, but
-                //just develop/debug one or two modules at a time.
-                {
-                    name: "foo/bar/bin",
-                    excludeShallow: [
-                        "foo/bar/bot"
-                    ]
-                },
-                */
-        
-        
-        //Optimize the require-jquery.js file by applying any minification
-        //that is desired via the optimize: setting above.
-        {
-            name: "helper/require-jquery"
-        },
+    //only the root bundles will be included unless the locale: section is set
+    // above.
+    modules : [
+    /*
+    //Just specifying a module name means that module will be converted into
+    //a built file that contains all of its dependencies. If that module or any
+    //of its dependencies includes i18n bundles, they may not be included in the
+    //built file unless the locale: section is set above.
+    {
+    name: "foo/bar/bop",
 
-        //Optimize the application files. Exclude jQuery since it is
-        //included already in require-jquery.js
-        {
-            name: "main",
-            exclude: ["jquery"]
-        }
-    ],
+    //For build profiles that contain more than one modules entry,
+    //allow overrides for the properties that set for the whole build,
+    //for example a different set of pragmas for this module.
+    //The override's value is an object that can
+    //contain any of the other build options in this file.
+    override: {
+    pragmas: {
+    fooExclude: true
+    }
+    }
+    },
+
+    //This module entry combines all the dependencies of foo/bar/bop and foo/bar/bee
+    //and any of their dependencies into one file.
+    {
+    name: "foo/bar/bop",
+    include: ["foo/bar/bee"]
+    },
+
+    //This module entry combines all the dependencies of foo/bar/bip into one file,
+    //but excludes foo/bar/bop and its dependencies from the built file. If you want
+    //to exclude a module that is also another module being optimized, it is more
+    //efficient if you define that module optimization entry before using it
+    //in an exclude array.
+    {
+    name: "foo/bar/bip",
+    exclude: [
+    "foo/bar/bop"
+    ]
+    },
+
+    //This module entry shows how to specify a specific module be excluded
+    //from the built module file. excludeShallow means just exclude that
+    //specific module, but if that module has nested dependencies that are
+    //part of the built file, keep them in there. This is useful during
+    //development when you want to have a fast bundled set of modules, but
+    //just develop/debug one or two modules at a time.
+    {
+    name: "foo/bar/bin",
+    excludeShallow: [
+    "foo/bar/bot"
+    ]
+    },
+    */
+
+    //Optimize the require-jquery.js file by applying any minification
+    //that is desired via the optimize: setting above.
+    {
+        name : "script/helper/require-jquery"
+    },
+
+    //Optimize the application files. Exclude jQuery since it is
+    //included already in require-jquery.js
+    {
+        name : "main",
+        exclude : ["jquery"]
+    }],
 
     //Wrap any build layer in a start and end text specified by wrap.
     //Use this to encapsulate the module code so that define/require are
@@ -275,8 +280,8 @@
     //making it easy to create stand-alone libraries that do not mandate
     //the end user use requirejs.
     //wrap: {
-        //start: "(function() {",
-        //end: "}());"
+    //start: "(function() {",
+    //end: "}());"
     //},
 
     //Another way to use wrap, but uses default wrapping of:
@@ -304,6 +309,5 @@
     //called dirExclusionRegExp before the 1.0.2 release.
     //As of 1.0.3, this value can also be a string that is converted to a
     //RegExp via new RegExp().
-    fileExclusionRegExp: /^\.|app\.build\.js|\.(exe|bat|coffee|less|styl|json|markdown)$/
+    fileExclusionRegExp : /^\.|app\.build\.js|\.(exe|bat|coffee|less|styl|markdown)$/
 })
-

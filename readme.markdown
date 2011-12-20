@@ -10,3 +10,4 @@
 ### 2.build "etpm" to manange "activity" package  
 ####  eg :  run command 'etpm install epaper' will install epaper moduler to system   
 ### 3.manage jQuery plugin depandency & mutiple load issue
+### 4.use some robot to do complax task. such as : http://hubot.github.com

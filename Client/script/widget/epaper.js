@@ -64,10 +64,7 @@
  * @see metadata()
  */
 define(function(require) {
-    var $ = require("jquery"),
-    j=require('js/helper/order!lib/jquery-jtemplates_uncompressed'),
-    $ui=require('lib/jquery-ui'),
-    engine=require('script/helper/tpl_engine.js');
+    var $ = require("jquery"), j = require('js/helper/order!js/lib/jquery-jtemplates_uncompressed'), $ui = require('js/lib/jquery-ui'), engine = require('js/helper/tpl_engine');
     $.fn.epaper = function(o) {
         return this.each(function() {
             $(this).data('epaper', new $e(this, o));
@@ -810,10 +807,11 @@ define(function(require) {
             return value * 100 / fromZoom;
         },
         init : function(o) {
-            var opt = $.extend({}, this.defaults, o),
-            HTML=engine(opt.engine?opt.engine:opt.engine="jtemplate",'tpl/'+opt.engine+'/epaper.tpl',opt);
-            $(opt.epaper_wrapper).html(HTML);
-            $(opt.selectors.epaper_container).epaper();
+            var opt = $.extend({}, this.defaults, o);
+            engine(opt.engine ? opt.engine : opt.engine = "jtemplate", 'tpl/' + opt.engine + '/epaper.tpl', opt, function(html) {
+                $(opt.epaper_wrapper).html(html);
+                $(opt.selectors.epaper_container).epaper();
+            });
         }
     });
     $.fn.extend({
