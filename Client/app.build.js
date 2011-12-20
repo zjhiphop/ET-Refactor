@@ -36,10 +36,19 @@
         /*widget*/
         /*activity*/
         /*helper*/
-        "jquery" : "script/helper/require-jquery",
+        "jquery":"script/lib/jquery/_jquery",
         "js" : "script",
         "css" : "css",
-        "tpl" : "tpl"
+        "tpl" : "tpl",
+        "help":"script/helper",
+        "lib":"script/lib",
+        "backbone":"script/lib/backbone/_backbone",
+        "mustache":"script/lib/mustache/_mustache",
+        "modernizr":"script/lib/modernizr/_modernizr",
+        "underscore":"script/lib/underscore/_underscore",
+        "models":"script/models",
+        "views":"script/views",
+        "collections":"script/collections"
     },
 
     //Configure CommonJS packages. See
@@ -51,7 +60,7 @@
     //The directory path to save the output. If not specified, then
     //the path will default to be a directory called "build" as a sibling
     //to the build file. All relative paths are relative to the build file.
-    dir : "../../build-client",
+    dir : "../build-client",
 
     //Used to inline i18n resources into the built file. If no locale
     //is specified, i18n resources will not be inlined. Only one locale
@@ -270,7 +279,7 @@
     //Optimize the application files. Exclude jQuery since it is
     //included already in require-jquery.js
     {
-        name : "main",
+        name : "script/main",
         exclude : ["jquery"]
     }],
 

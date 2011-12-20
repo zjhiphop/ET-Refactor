@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>ET Activity Demo Page</title>
+        <link rel="stylesheet" href="css/reset-min.css" type="text/css" media="screen" title="no title" charset="utf-8"/>
         <link href="css/less/epaper.css" rel="stylesheet" type="text/css" />
-        <script data-main="main" src="script/helper/require-jquery.js"></script>
+        <script data-main="script/main" src="script/helper/require-jquery.js"></script>
         <script type="text/javascript" charset="utf-8">
             /*http://requirejs.org/docs/api.html#config*/
             require.config({
@@ -12,7 +13,17 @@
                 paths : {
                     "js" : "script",
                     "css" : "css",
-                    "tpl" : "tpl"
+                    "tpl" : "tpl",
+                    "help" : "script/helper",
+                    "lib" : "script/lib",
+                    "backbone" : "script/lib/backbone/_backbone",
+                    "mustache" : "script/lib/mustache/_mustache",
+                    "modernizr" : "script/lib/modernizr/_modernizr",
+                    "underscore" : "script/lib/underscore/_underscore",
+                    "jquery" : "script/lib/jquery/_jquery",
+                    "models" : "script/models",
+                    "views" : "script/views",
+                    "collections" : "script/collections"
                 },
                 waitSeconds : 15,
                 locale : "fr-fr"
@@ -23,8 +34,27 @@
     <body>
         <div id='epaper_container'></div>
         <div id="container">
-            <div id="menu"></div>
-            <div id="content"></div>
+            <div id="logo">
+                <h1>Modular Backbone</h1>
+            </div>
+            <div id="menu">
+                <ul>
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="#/projects">Project List</a>
+                    </li>
+                    <li>
+                        <a href="#/users">User List</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="page">
+            </div>
+            <div id="footer">
+               Jade.Z
+            </div>
         </div>
     </body>
 </html>
