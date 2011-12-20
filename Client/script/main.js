@@ -1,5 +1,5 @@
-require(['jquery','js/widget/epaper','js/helper/order!lib/jquery-jtemplates_uncompressed','lib/jquery-ui'],function($p){
-	$p.epaper.init({epaper_wrapper:'#container',src: "imgs/eg_epaper.jpg"});
+require(['js/widget/epaper'],function(epaper){
+	epaper.init({epaper_wrapper:'#container',src: "imgs/eg_epaper.jpg",engine:'jtemplate'});
 });
 define(function(require) {
   var lamp=require("js/nls/lamp");

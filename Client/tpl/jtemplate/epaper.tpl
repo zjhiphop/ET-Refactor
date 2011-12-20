@@ -18,7 +18,7 @@
 	</div>
 </div>        
 <div class="epaper_body">
-    <div class="epaper_container epaper_content" data='src:"{$T}"'></div>
+    <div class="epaper_container epaper_content" data='src:"{$T.src}"'></div>
 </div>
 <div class="epaper_foot">
    	<div class="epaper_corner"></div>

@@ -3,7 +3,7 @@
 
   See http://mustache.github.com/ for more info.
 */
-
+define(function(){
 var Mustache = function() {
   var Renderer = function() {};
 
@@ -323,3 +323,5 @@ var Mustache = function() {
     }
   });
 }();
+  return Mustache;
+});
