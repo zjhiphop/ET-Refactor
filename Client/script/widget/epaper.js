@@ -64,7 +64,7 @@
  * @see metadata()
  */
 define(function(require) {
-    var $ = require("jquery"), j = require('js/helper/order!js/lib/jquery-jtemplates_uncompressed'), $ui = require('js/lib/jquery-ui'), engine = require('js/helper/tpl_engine');
+    var $ = require("jquery"), j = require('js/helper/order!js/lib/jtemplate'), $ui = require('js/lib/jquery-ui'), engine = require('js/helper/tpl_engine');
     $.fn.epaper = function(o) {
         return this.each(function() {
             $(this).data('epaper', new $e(this, o));

@@ -4,9 +4,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'views/home/main',
   'views/projects/list',
   'views/users/list'
-], function($, _, Backbone, Session, projectListView, userListView){
+], function($, _, Backbone, mainHomeView, projectListView, userListView){
 //@on
   var AppRouter = Backbone.Router.extend({
     routes: {

@@ -3,7 +3,7 @@ define(function(require) {
         var type = type || "jtemplate", $ = require('jquery');
         switch(type) {
             case "jtemplate":
-                var $ = require('jquery'), jtem = 'js/helper/order!lib/jquery-jtemplates_uncompressed', tem = $.createTemplateURL(tpl);
+                var $ = require('jquery'), jtem = 'js/helper/order!lib/jtemplate', tem = $.createTemplateURL(tpl);
                 cb($.processTemplateToText(tem, data));
                 break;
             case "mustache":

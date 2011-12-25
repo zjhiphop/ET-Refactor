@@ -9,5 +9,8 @@
 ### 1.add JS template engine(jTemplate/) Mediator to provide a common API  
 ### 2.build "etpm" to manange "activity" package  
 ####  eg :  run command 'etpm install epaper' will install epaper moduler to system   
-### 3.manage jQuery plugin depandency & mutiple load issue
-### 4.use some robot to do complax task. such as : http://hubot.github.com
+### 3.manage jQuery plugin depandency & mutiple load issue  
+### 4.use some robot to do complax task. such as : http://hubot.github.com  
+### 5.global dispose moduler  
+### 6.update new resourse js/css  
+### 7.add unit test for helper moduler

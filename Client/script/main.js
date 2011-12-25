@@ -1,3 +1,25 @@
+/*http://requirejs.org/docs/api.html#config*/
+require.config({
+    baseUrl : ".",
+    paths : {
+        "js" : "script",
+        "css" : "css",
+        "tpl" : "tpl",
+        "help" : "script/helper",
+        "lib" : "script/lib",
+        "backbone" : "script/lib/backbone/_backbone",
+        "mustache" : "script/lib/mustache/_mustache",
+        "modernizr" : "script/lib/modernizr/_modernizr",
+        "underscore" : "script/lib/underscore/_underscore",
+        "jquery" : "script/lib/jquery/_jquery",
+        "models" : "script/models",
+        "views" : "script/views",
+        "collections" : "script/collections"
+    },
+    waitSeconds : 15,
+    locale : "fr-fr"
+});
+
 require(['js/widget/epaper'], function(epaper) {
     epaper.init({
         epaper_wrapper : '#epaper_container',
@@ -5,10 +27,9 @@ require(['js/widget/epaper'], function(epaper) {
         engine : 'jtemplate'
     });
 });
-
 require([
-  // Load our app module and pass it to our definition function
-  //@off
+// Load our app module and pass it to our definition function
+//@off
   'js/app',
   // Some plugins have to be loaded in order due to there non AMD compliance
   // Because these scripts are not "modules" they do not pass any values to the
@@ -23,7 +44,6 @@ require([
     // a parameter to this function
     App.initialize();
 });
-
 /*
  *locale
  *
