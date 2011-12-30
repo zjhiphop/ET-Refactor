@@ -1,0 +1,11 @@
+p{
+  background:#EEE;
+  border-radius:5px;
+  padding:10px;
+  font:20px bold;  
+}
+#logo{
+  font-size: 20px;
+  color: blue;
+  font-weight: bold;
+}
